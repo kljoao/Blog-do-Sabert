@@ -4,7 +4,8 @@
       "Bash(npx create-expo-app@latest . --template blank)",
       "Bash(pnpm install)",
       "Bash(tree:*)",
-      "Bash(pnpm add:*)"
+      "Bash(pnpm add:*)",
+      "Bash(npx tailwindcss:*)"
     ]
   }
 }

@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { theme } from '../styles/theme';
 
 const PostCard = ({ post, onPress }) => {
   const formatDate = (dateString) => {
@@ -17,136 +16,55 @@ const PostCard = ({ post, onPress }) => {
   };
 
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.9}>
+    <TouchableOpacity
+      className="bg-surface rounded-lg p-lg mb-md mx-md border-l-4 border-l-secondary shadow-md"
+      onPress={onPress}
+      activeOpacity={0.9}
+    >
       {/* Header com categoria visual */}
-      <View style={styles.header}>
-        <View style={styles.categoryBadge}>
-          <Ionicons name="newspaper-outline" size={16} color={theme.colors.primary} />
-          <Text style={styles.categoryText}>Artigo</Text>
+      <View className="flex-row justify-between items-center mb-md">
+        <View className="flex-row items-center bg-primary-light/20 px-sm py-xs rounded-sm gap-xs">
+          <Ionicons name="newspaper-outline" size={16} color="#2E7D32" />
+          <Text className="text-xs font-semibold text-primary uppercase tracking-wide">
+            Artigo
+          </Text>
         </View>
         {post.data_criacao && (
-          <Text style={styles.dateText}>{formatDate(post.data_criacao)}</Text>
+          <Text className="text-xs text-text-light font-medium">
+            {formatDate(post.data_criacao)}
+          </Text>
         )}
       </View>
 
       {/* Título */}
-      <Text style={styles.title} numberOfLines={2}>
+      <Text className="text-xl font-bold text-text leading-7 mb-sm" numberOfLines={2}>
         {post.titulo || 'Sem título'}
       </Text>
 
       {/* Conteúdo */}
       {post.conteudo && (
-        <Text style={styles.content} numberOfLines={3}>
+        <Text className="text-md text-text-secondary leading-6 mb-md" numberOfLines={3}>
           {post.conteudo}
         </Text>
       )}
 
       {/* Footer com autor e ação */}
-      <View style={styles.footer}>
-        <View style={styles.authorContainer}>
-          <View style={styles.avatarPlaceholder}>
-            <Ionicons name="person" size={16} color={theme.colors.textOnPrimary} />
+      <View className="flex-row justify-between items-center pt-sm border-t border-border-light">
+        <View className="flex-row items-center flex-1">
+          <View className="w-8 h-8 rounded-full bg-primary justify-center items-center mr-sm">
+            <Ionicons name="person" size={16} color="#FFFFFF" />
           </View>
-          <Text style={styles.authorText}>{post.autor || 'Autor desconhecido'}</Text>
+          <Text className="text-sm font-medium text-text-secondary flex-1">
+            {post.autor || 'Autor desconhecido'}
+          </Text>
         </View>
-        <TouchableOpacity style={styles.readMoreButton}>
-          <Text style={styles.readMoreText}>Ler mais</Text>
-          <Ionicons name="arrow-forward" size={14} color={theme.colors.primary} />
-        </TouchableOpacity>
+        <View className="flex-row items-center gap-xs">
+          <Text className="text-sm font-semibold text-primary">Ler mais</Text>
+          <Ionicons name="arrow-forward" size={14} color="#2E7D32" />
+        </View>
       </View>
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: theme.colors.card,
-    borderRadius: theme.borderRadius.lg,
-    padding: theme.spacing.lg,
-    marginBottom: theme.spacing.md,
-    marginHorizontal: theme.spacing.md,
-    borderLeftWidth: 4,
-    borderLeftColor: theme.colors.secondary,
-    ...theme.shadows.md,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: theme.spacing.md,
-  },
-  categoryBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: theme.colors.primaryLight + '20',
-    paddingHorizontal: theme.spacing.sm,
-    paddingVertical: theme.spacing.xs,
-    borderRadius: theme.borderRadius.sm,
-    gap: theme.spacing.xs,
-  },
-  categoryText: {
-    fontSize: theme.fonts.sizes.xs,
-    fontWeight: theme.fonts.weights.semibold,
-    color: theme.colors.primary,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  dateText: {
-    fontSize: theme.fonts.sizes.xs,
-    color: theme.colors.textLight,
-    fontWeight: theme.fonts.weights.medium,
-  },
-  title: {
-    fontSize: theme.fonts.sizes.xl,
-    fontWeight: theme.fonts.weights.bold,
-    color: theme.colors.text,
-    lineHeight: 26,
-    marginBottom: theme.spacing.sm,
-  },
-  content: {
-    fontSize: theme.fonts.sizes.md,
-    color: theme.colors.textSecondary,
-    lineHeight: 22,
-    marginBottom: theme.spacing.md,
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: theme.spacing.sm,
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.borderLight,
-  },
-  authorContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  avatarPlaceholder: {
-    width: 32,
-    height: 32,
-    borderRadius: theme.borderRadius.round,
-    backgroundColor: theme.colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: theme.spacing.sm,
-  },
-  authorText: {
-    fontSize: theme.fonts.sizes.sm,
-    fontWeight: theme.fonts.weights.medium,
-    color: theme.colors.textSecondary,
-    flex: 1,
-  },
-  readMoreButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing.xs,
-  },
-  readMoreText: {
-    fontSize: theme.fonts.sizes.sm,
-    fontWeight: theme.fonts.weights.semibold,
-    color: theme.colors.primary,
-  },
-});
 
 export default PostCard;
