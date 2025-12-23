@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-expo-app@latest . --template blank)",
+      "Bash(pnpm install)",
+      "Bash(tree:*)",
+      "Bash(pnpm add:*)"
+    ]
+  }
+}
