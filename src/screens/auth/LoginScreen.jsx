@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
+  StyleSheet,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -12,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
+import { theme } from '../../styles/theme';
 import { authAPI } from '../../api/auth.api';
 import useAuthStore from '../../store/authStore';
 import { validateLoginForm } from '../../utils/validators';
@@ -52,47 +54,34 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View className="flex-1">
-      <LinearGradient
-        colors={['#2E7D32', '#1B5E20']}
-        className="flex-1"
-      >
-        <SafeAreaView className="flex-1">
+    <View style={styles.container}>
+      <LinearGradient colors={[theme.colors.primary, theme.colors.primaryDark]} style={styles.gradient}>
+        <SafeAreaView style={styles.safeArea}>
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            className="flex-1"
+            style={styles.keyboardView}
           >
             <ScrollView
-              contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 24, paddingVertical: 32 }}
+              contentContainerStyle={styles.scrollView}
               showsVerticalScrollIndicator={false}
             >
-              {/* Header com Logo */}
-              <View className="items-center mb-xl">
-                <View className="w-[180px] h-[180px] bg-surface rounded-2xl p-md mb-lg shadow-lg">
+              <View style={styles.header}>
+                <View style={styles.logoContainer}>
                   <Image
                     source={require('../../../public/logo.png')}
-                    className="w-full h-full"
+                    style={styles.logo}
                     resizeMode="contain"
                   />
                 </View>
-                <Text className="text-lg font-normal text-text-on-primary opacity-90 mb-xs">
-                  Bem-vindo ao
-                </Text>
-                <Text className="text-3xl font-extrabold text-text-on-primary mb-xs">
-                  Blog do Saber
-                </Text>
-                <Text className="text-md font-normal text-text-on-primary opacity-80">
-                  Conhecimento que transforma
-                </Text>
+                <Text style={styles.welcomeText}>Bem-vindo ao</Text>
+                <Text style={styles.appName}>Blog do Saber</Text>
+                <Text style={styles.tagline}>Conhecimento que transforma</Text>
               </View>
 
-              {/* Card de Login */}
-              <View className="bg-surface rounded-xl p-xl shadow-xl">
-                <Text className="text-xl font-bold text-text mb-lg text-center">
-                  Entrar na Plataforma
-                </Text>
+              <View style={styles.card}>
+                <Text style={styles.cardTitle}>Entrar na Plataforma</Text>
 
-                <View className="gap-md">
+                <View style={styles.form}>
                   <Input
                     label="Email"
                     value={email}
@@ -118,16 +107,13 @@ const LoginScreen = ({ navigation }) => {
                     title="Entrar"
                     onPress={handleLogin}
                     loading={loading}
-                    className="mt-md"
+                    style={styles.button}
                   />
                 </View>
               </View>
 
-              {/* Footer */}
-              <View className="mt-xl items-center">
-                <Text className="text-sm text-text-on-primary opacity-70">
-                  FIAP - Tech Challenge 2025
-                </Text>
+              <View style={styles.footer}>
+                <Text style={styles.footerText}>FIAP - Tech Challenge 2025</Text>
               </View>
             </ScrollView>
           </KeyboardAvoidingView>
@@ -136,5 +122,89 @@ const LoginScreen = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  gradient: {
+    flex: 1,
+  },
+  safeArea: {
+    flex: 1,
+  },
+  keyboardView: {
+    flex: 1,
+  },
+  scrollView: {
+    flexGrow: 1,
+    paddingHorizontal: theme.spacing.lg,
+    paddingVertical: theme.spacing.xl,
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: theme.spacing.xl,
+  },
+  logoContainer: {
+    width: 180,
+    height: 180,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.borderRadius.xxl,
+    padding: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
+    ...theme.shadows.lg,
+  },
+  logo: {
+    width: '100%',
+    height: '100%',
+  },
+  welcomeText: {
+    fontSize: theme.fonts.sizes.lg,
+    fontWeight: theme.fonts.weights.regular,
+    color: theme.colors.textOnPrimary,
+    opacity: 0.9,
+    marginBottom: theme.spacing.xs,
+  },
+  appName: {
+    fontSize: theme.fonts.sizes.xxxl,
+    fontWeight: theme.fonts.weights.extrabold,
+    color: theme.colors.textOnPrimary,
+    marginBottom: theme.spacing.xs,
+  },
+  tagline: {
+    fontSize: theme.fonts.sizes.md,
+    fontWeight: theme.fonts.weights.regular,
+    color: theme.colors.textOnPrimary,
+    opacity: 0.8,
+  },
+  card: {
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.borderRadius.xl,
+    padding: theme.spacing.xl,
+    ...theme.shadows.xl,
+  },
+  cardTitle: {
+    fontSize: theme.fonts.sizes.xl,
+    fontWeight: theme.fonts.weights.bold,
+    color: theme.colors.text,
+    marginBottom: theme.spacing.lg,
+    textAlign: 'center',
+  },
+  form: {
+    gap: theme.spacing.md,
+  },
+  button: {
+    marginTop: theme.spacing.md,
+  },
+  footer: {
+    marginTop: theme.spacing.xl,
+    alignItems: 'center',
+  },
+  footerText: {
+    fontSize: theme.fonts.sizes.sm,
+    color: theme.colors.textOnPrimary,
+    opacity: 0.7,
+  },
+});
 
 export default LoginScreen;

@@ -94,13 +94,11 @@ User no storage: ${userData}
 UserType no storage: ${storedUserType}
 ==================
     `;
-    console.log(info);
     setDebugInfo(info);
   };
 
   const clearCacheAndLogout = async () => {
     await AsyncStorage.clear(); // Limpa TUDO
-    console.log('AsyncStorage limpo completamente!');
     await logout();
   };
 

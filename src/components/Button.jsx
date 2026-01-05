@@ -1,6 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, Text, ActivityIndicator, View } from 'react-native';
+import { TouchableOpacity, Text, ActivityIndicator, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { theme } from '../styles/theme';
 
 const Button = ({
   title,
@@ -10,63 +11,52 @@ const Button = ({
   disabled = false,
   loading = false,
   icon,
-  className,
+  style,
+  textStyle,
 }) => {
-  // Classes base
-  const baseClasses = 'flex-row items-center justify-center rounded-lg';
+  const getButtonStyle = () => {
+    const styles = [buttonStyles.button];
 
-  // Classes de tamanho
-  const sizeClasses = {
-    small: 'px-md py-sm min-h-[40px] rounded-md',
-    medium: 'px-lg py-md min-h-[52px]',
-    large: 'px-xl py-lg min-h-[60px] rounded-xl',
+    // Size
+    if (size === 'small') styles.push(buttonStyles.buttonSmall);
+    else if (size === 'large') styles.push(buttonStyles.buttonLarge);
+
+    // Variant
+    if (variant === 'secondary') styles.push(buttonStyles.buttonSecondary);
+    else if (variant === 'outline') styles.push(buttonStyles.buttonOutline);
+    else if (variant === 'danger') styles.push(buttonStyles.buttonDanger);
+    else if (variant === 'accent') styles.push(buttonStyles.buttonAccent);
+    else if (variant === 'ghost') styles.push(buttonStyles.buttonGhost);
+
+    if (disabled || loading) styles.push(buttonStyles.buttonDisabled);
+    if (style) styles.push(style);
+
+    return styles;
   };
 
-  // Classes de variante
-  const variantClasses = {
-    primary: 'bg-primary shadow-sm',
-    secondary: 'bg-secondary shadow-sm',
-    outline: 'bg-transparent border-2 border-primary',
-    accent: 'bg-accent shadow-sm',
-    danger: 'bg-danger shadow-sm',
-    ghost: 'bg-transparent',
+  const getTextStyle = () => {
+    const styles = [buttonStyles.buttonText];
+
+    if (size === 'small') styles.push(buttonStyles.buttonTextSmall);
+    else if (size === 'large') styles.push(buttonStyles.buttonTextLarge);
+
+    if (variant === 'outline' || variant === 'ghost') styles.push(buttonStyles.buttonTextOutline);
+    else if (variant === 'secondary') styles.push(buttonStyles.buttonTextSecondary);
+
+    if (textStyle) styles.push(textStyle);
+    return styles;
   };
 
-  // Classes de texto
-  const textClasses = {
-    primary: 'text-text-on-primary font-bold',
-    secondary: 'text-text-on-secondary font-bold',
-    outline: 'text-primary font-bold',
-    accent: 'text-text-on-primary font-bold',
-    danger: 'text-text-on-primary font-bold',
-    ghost: 'text-primary font-semibold',
-  };
-
-  const textSizeClasses = {
-    small: 'text-sm',
-    medium: 'text-md',
-    large: 'text-lg',
-  };
-
-  // Classe de desabilitado
-  const disabledClasses = disabled || loading ? 'opacity-60' : '';
-
-  // Ícone size
-  const iconSizes = {
-    small: 18,
-    medium: 20,
-    large: 24,
-  };
-
-  // Cor do ícone
   const getIconColor = () => {
-    if (variant === 'outline' || variant === 'ghost') return '#2E7D32';
-    return '#FFFFFF';
+    if (variant === 'outline' || variant === 'ghost') return theme.colors.primary;
+    return theme.colors.textOnPrimary;
   };
+
+  const iconSizes = { small: 18, medium: 20, large: 24 };
 
   return (
     <TouchableOpacity
-      className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${disabledClasses} ${className || ''}`}
+      style={getButtonStyle()}
       onPress={onPress}
       disabled={disabled || loading}
       activeOpacity={0.8}
@@ -74,22 +64,93 @@ const Button = ({
       {loading ? (
         <ActivityIndicator color={getIconColor()} size="small" />
       ) : (
-        <>
+        <View style={buttonStyles.content}>
           {icon && (
             <Ionicons
               name={icon}
               size={iconSizes[size]}
               color={getIconColor()}
-              className="mr-sm"
+              style={buttonStyles.icon}
             />
           )}
-          <Text className={`${textClasses[variant]} ${textSizeClasses[size]}`}>
-            {title}
-          </Text>
-        </>
+          <Text style={getTextStyle()}>{title}</Text>
+        </View>
       )}
     </TouchableOpacity>
   );
 };
+
+const buttonStyles = StyleSheet.create({
+  button: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.borderRadius.lg,
+    paddingVertical: theme.spacing.md,
+    paddingHorizontal: theme.spacing.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 52,
+    ...theme.shadows.sm,
+  },
+  buttonSmall: {
+    paddingVertical: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.md,
+    minHeight: 40,
+    borderRadius: theme.borderRadius.md,
+  },
+  buttonLarge: {
+    paddingVertical: theme.spacing.lg,
+    paddingHorizontal: theme.spacing.xl,
+    minHeight: 60,
+    borderRadius: theme.borderRadius.xl,
+  },
+  buttonSecondary: {
+    backgroundColor: theme.colors.secondary,
+  },
+  buttonOutline: {
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    borderColor: theme.colors.primary,
+    ...theme.shadows.none,
+  },
+  buttonAccent: {
+    backgroundColor: theme.colors.accent,
+  },
+  buttonDanger: {
+    backgroundColor: theme.colors.danger,
+  },
+  buttonGhost: {
+    backgroundColor: 'transparent',
+    ...theme.shadows.none,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  icon: {
+    marginRight: theme.spacing.sm,
+  },
+  buttonText: {
+    fontSize: theme.fonts.sizes.md,
+    fontWeight: theme.fonts.weights.bold,
+    color: theme.colors.textOnPrimary,
+  },
+  buttonTextSmall: {
+    fontSize: theme.fonts.sizes.sm,
+    fontWeight: theme.fonts.weights.semibold,
+  },
+  buttonTextLarge: {
+    fontSize: theme.fonts.sizes.lg,
+  },
+  buttonTextOutline: {
+    color: theme.colors.primary,
+  },
+  buttonTextSecondary: {
+    color: theme.colors.textOnSecondary,
+  },
+});
 
 export default Button;

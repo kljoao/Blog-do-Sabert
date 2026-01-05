@@ -5,7 +5,15 @@
       "Bash(pnpm install)",
       "Bash(tree:*)",
       "Bash(pnpm add:*)",
-      "Bash(npx tailwindcss:*)"
+      "Bash(npx tailwindcss:*)",
+      "Bash(pnpm start)",
+      "Bash(npx kill-port:*)",
+      "Bash(taskkill:*)",
+      "Bash(pnpm list:*)",
+      "Bash(cat:*)",
+      "Bash(pnpm install:*)",
+      "Bash(rm:*)",
+      "Bash(pnpm remove:*)"
     ]
   }
 }

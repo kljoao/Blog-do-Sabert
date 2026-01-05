@@ -22,7 +22,6 @@ api.interceptors.request.use(
         config.headers.Authorization = `Bearer ${token}`;
       }
     } catch (error) {
-      console.error('Erro ao obter token:', error);
     }
     return config;
   },
@@ -47,7 +46,6 @@ api.interceptors.response.use(
           await AsyncStorage.removeItem('@auth_token');
           await AsyncStorage.removeItem('@user_data');
           // Você pode despachar uma action para resetar o estado aqui
-          console.error('Não autorizado - faça login novamente');
           break;
 
         case 403:

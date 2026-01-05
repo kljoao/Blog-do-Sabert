@@ -70,13 +70,6 @@ const useAuthStore = create((set, get) => ({
       const userData = await AsyncStorage.getItem(STORAGE_KEYS.USER_DATA);
       const userType = await AsyncStorage.getItem(STORAGE_KEYS.USER_TYPE);
 
-      // DEBUG: Verificar dados do storage
-      console.log('=== DEBUG CHECK AUTH ===');
-      console.log('Token do storage:', token ? 'Existe' : 'Não existe');
-      console.log('User do storage:', userData);
-      console.log('UserType do storage:', userType);
-      console.log('========================');
-
       if (token && userData) {
         set({
           token,

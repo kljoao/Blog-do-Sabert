@@ -19,20 +19,12 @@ export const authAPI = {
       const response = await api.post(API_ENDPOINTS.LOGIN, payload);
       const { token, user } = response.data.data || response.data; // Suporta ambos os formatos
 
-      // DEBUG: Verificar dados recebidos
-      console.log('=== DEBUG LOGIN ===');
-      console.log('Response completo:', JSON.stringify(response.data, null, 2));
-      console.log('User recebido:', JSON.stringify(user, null, 2));
-      console.log('user.tipo:', user.tipo);
-      console.log('==================');
-
       // Salvar token e dados do usuário
       await AsyncStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
       await AsyncStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(user));
 
       // Determinar tipo de usuário
       const userType = user.tipo || 'aluno';
-      console.log('userType definido como:', userType);
       await AsyncStorage.setItem(STORAGE_KEYS.USER_TYPE, userType);
 
       return {
